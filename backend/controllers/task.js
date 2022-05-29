@@ -3,17 +3,85 @@ const connection=require("../models/db");
 
 // a function that adds a task to the database
 const addTask=(req,res)=>{
-
+//get the taskName and userId from the body:
+const {taskName,user_id}=req.body;
+const query=`INSERT INTO tasks(taskName,user_id) VALUES(?,?)`;
+const data=[taskName,user_id];
+connection.query(query,data,(error,result)=>{
+    if(error){
+        return res.status(500).json({
+            success:false,
+            message:error.message,
+        })
+    };
+    if(result.affectedRows){
+       res.status(201).json({
+        success:true,
+        message:`task ${taskName} has been added successfuly`
+    })
+   }else{
+       res.status(400).json({
+        success:false,
+        message:`an error occured while adding task ${taskName}`
+    })
+}
+})
 };
 
 // a function that updates a taskName by its id sent by params /:id
 const updateTaskById=(req,res)=>{
-
+    const taskId=req.params.id;
+    const {taskName}=req.body;
+    const query=`UPDATE tasks SET taskName=? WHERE id=?`;
+    const data=[taskName,taskId];
+    connection.query(query,data,(error,result)=>{
+        if(error){
+            return res.status(500).json({
+                success:false,
+                message:error.message,
+            })
+        };
+        //if result.affectedRows !=0 then task has been updated
+    if(result.affectedRows){
+        res.status(201).json({
+            success:true,
+            message:`taskId ${taskId} has been updated successfuly`
+        })
+    }else{
+        res.status(400).json({
+            success:false,
+            message:`an error occured while updating taskId ${taskId}`
+        })
+    }
+    })
 };
 
 
 // a function that updates isCompleted to 1 for a task by its id sent by params /:id
 const completeTaskById=(req,res)=>{
+    const taskId=req.params.id;
+    const query=`UPDATE tasks SET isCompleted=1 WHERE id=?`;
+    const data=[taskId];
+    connection.query(query,data,(error,result)=>{
+        if(error){
+            return res.status(500).json({
+                success:false,
+                message:error.message,
+            })
+        };
+        //if result.affectedRows !=0 then task has been updated
+    if(result.affectedRows){
+        res.status(201).json({
+            success:true,
+            message:`taskId ${taskId} has been updated successfuly`
+        })
+    }else{
+        res.status(400).json({
+            success:false,
+            message:`an error occured while updating taskId ${taskId}`
+        })
+    }
+    })
 
 };
 

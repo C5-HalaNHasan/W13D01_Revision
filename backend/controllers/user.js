@@ -18,7 +18,7 @@ const register=async (req,res)=>{
         if(error1){
             return res.status(500).json({
                 success:false,
-                message:error.message,
+                message:error1.message,
             })
         };
         //if the result is an empty array then the email doesn't ecist in the data base
@@ -99,7 +99,6 @@ const login=(req,res)=>{
                 });
           }
     })
-
 };
 
 
