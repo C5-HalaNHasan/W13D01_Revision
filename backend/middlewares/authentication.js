@@ -1,6 +1,6 @@
 const jwt=require("jsonwebtoken");
 
-const authentication=(req,res)=>{
+const authentication=(req,res,next)=>{
     try {
         //first the token is going to be checked if it's entered or not;if not then the user can't access the api
         if (!req.headers.authorization)
@@ -10,10 +10,10 @@ const authentication=(req,res)=>{
 
         //if the user has entered the token: the token is going to be checked if it's valid or not
         const token = req.headers.authorization.split(" ").pop();
-        jwt.verify(token, process.env.SECRET, (err, result) => {
+        jwt.verify(token, process.env.SECRET, (error, result) => {
           console.log("from authentication func",result)//!
         //if the is invalid;then the user will not be able to access the api:
-          if (err) {
+          if (error) {
             res.status(403).json({
               success: false,
               message: "The token is invalid or expired",
@@ -23,7 +23,7 @@ const authentication=(req,res)=>{
             next();
           }
         });
-      } catch (error) {
+      } catch (error1) {
         res.status(403).json({ 
             message: "forbidden" 
         });

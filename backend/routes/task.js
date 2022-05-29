@@ -1,7 +1,9 @@
 //create the taskRouter and its endpoints
 const express=require("express");
 const {addTask,updateTaskById,completeTaskById,deleteTaskById,getAllTasks,getCompletedTasks}=require("../controllers/task");
-const {authentication}=require("../middlewares/authentication")
+const {authentication}=require("../middlewares/authentication");
+const {authorization}=require("../middlewares/authorization");
+
 
 const taskRouter=express.Router();
 
@@ -15,7 +17,7 @@ taskRouter.put("/:id",authentication,updateTaskById);
 taskRouter.put("/completed/:id",authentication,completeTaskById);
 
 //endpoint for DELETE request ==> http://localhost:5000/task/:id==> deleteTaskById
-taskRouter.delete("/:id",authentication,deleteTaskById);
+taskRouter.delete("/:id",authentication,authorization("DELETE TASK"),deleteTaskById);
 
 //endpoint for GET request ==> http://localhost:5000/task ==> getAllTasks
 taskRouter.get("/",authentication,getAllTasks);
