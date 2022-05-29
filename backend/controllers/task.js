@@ -43,7 +43,7 @@ const updateTaskById=(req,res)=>{
         };
         //if result.affectedRows !=0 then task has been updated
     if(result.affectedRows){
-        res.status(201).json({
+        res.status(200).json({
             success:true,
             message:`taskId ${taskId} has been updated successfuly`
         })
@@ -71,7 +71,7 @@ const completeTaskById=(req,res)=>{
         };
         //if result.affectedRows !=0 then task has been updated
     if(result.affectedRows){
-        res.status(201).json({
+        res.status(200).json({
             success:true,
             message:`taskId ${taskId} has been updated successfuly`
         })
@@ -87,18 +87,85 @@ const completeTaskById=(req,res)=>{
 
 // a function that set isDeleted of a task to 1 by its id sent by params /:id
 const deleteTaskById=(req,res)=>{
+    const taskId=req.params.id;
+    //setting isDeleted to 1 (soft)
+    const query=`UPDATE tasks SET isDeleted=1 WHERE id=?`;
+    const data=[taskId];
+    connection.query(query,data,(error,result)=>{
+        if(error){
+            return res.status(500).json({
+                success:false,
+                message:error.message,
+            })
+        };
+        //if result.affectedRows !=0 then task has been updated
+    if(result.affectedRows){
+        res.status(200).json({
+            success:true,
+            message:`taskId ${taskId} has been deleted successfuly`
+        })
+    }else{
+        res.status(400).json({
+            success:false,
+            message:`an error occured while deleting taskId ${taskId}`
+        })
+    }
+    })
 
 };
 
 
 // a function that gets all the tasks saved in the database where isDeleted=0
 const getAllTasks=(req,res)=>{
-
+    const query=`SELECT * FROM tasks WHERE isDeleted=0`;
+    connection.query(query,(error,result)=>{
+        if(error){
+            return res.status(500).json({
+                success:false,
+                message:error.message,
+            })
+        };
+        //if result.length !=0 then there are tasks to be shown
+    if(result.length){
+        res.status(200).json({
+            success:true,
+            message:"All tasks",
+            result:result
+        })
+    }else{//there's no taske to be shown (or the tasks are soft deletd)
+        res.status(404).json({
+            success:false,
+            message:"No tasks found",
+        })
+    }
+    })
 };
 
 
 // a function that gets all the tasks saved in the database where isDeleted=0 && isCompleted=1
 const getCompletedTasks=(req,res)=>{
+    const query=`SELECT * FROM tasks WHERE isDeleted=0 AND isCompleted=1`;
+    connection.query(query,(error,result)=>{
+        if(error){
+            return res.status(500).json({
+                success:false,
+                message:error.message,
+            })
+        };
+        //if result.length !=0 then there are tasks to be shown
+    if(result.length){
+        res.status(200).json({
+            success:true,
+            message:"All completed tasks",
+            result:result
+        })
+    }else{//there's no taske to be shown (or the tasks are soft deletd)
+        res.status(404).json({
+            success:false,
+            message:"No completed tasks found",
+        })
+    }
+    })
 
 };
 
