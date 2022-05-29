@@ -40,7 +40,7 @@ CREATE TABLE users(
 CREATE TABLE tasks(
     id INT AUTO_INCREMENT NOT NULL,
     taskName VARCHAR(255),
-    isCompleted TINYINT DEFAULT 01,
+    isCompleted TINYINT DEFAULT 0,
     isDeleted TINYINT DEFAULT 0,
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES users (id),
