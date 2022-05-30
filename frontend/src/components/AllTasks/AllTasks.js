@@ -1,41 +1,57 @@
 import axios from "axios";
-import { useState } from "react";
-import { useSelector,useDispatch } from "react-redux";
+import {useEffect} from "react";
 import NavBar from "../NavBar/NavBar";
 
-const AllTasks=()=>{
-    //to inform the user about the states of the actions:
-    const [message,setMessage]=useState("");
+//to implement redux:
+import {useSelector,useDispatch} from "react-redux";
+import {setTasks} from "../redux/reducers/tasks"
 
-    //get token from redux store to be sent with axios requests/get tasks array to be filled by the backend and stored in the redux store:
+const  AllTasks=()=>{
+    const dispatch=useDispatch();
+    //to rendere different navBar items if the user is loggedIn:
     const {token,tasks}=useSelector((state)=>{
-        return {
+        return{
             token:state.auth.token,
             tasks:state.tasks.tasks
         }
-    });
-
-    //to set all the tasks in the redux store:
-    const dispatch=useDispatch();
-
+        });
 
     //get request to the backend to get all the tasks registered for the currently loggedin user:
     const getAllTasks=()=>{
         const getAllTasksUrl="http://localhost:5000/task/";
         axios.get(getAllTasksUrl,{headers:{authorization:token}}).then((result)=>{
+            // console.log(result.data.result)
+            dispatch(setTasks(result.data.result));
 
         }).catch((error)=>{
-
+            console.log(error.response.data.message);
         })
     }
+    
+    useEffect(()=>{
+        getAllTasks();
+    },[])
 
-    return(
-        <>
-        <NavBar/>
+return(
+    <>
+    <NavBar/>
 
-        </>
-    )
+    
+  <div className="taskCard">
+  {tasks.map((task,index)=>{
+      return(<>
+          <p>{task.taskName}</p>
+          <p>{task.isCompleted}</p>
+          <button>delete</button>
+          <button>update</button>
+          <button>complete</button>
+      </>)
+  })}
 
+  </div>
+  </>
+
+)
 };
 
 export default AllTasks;

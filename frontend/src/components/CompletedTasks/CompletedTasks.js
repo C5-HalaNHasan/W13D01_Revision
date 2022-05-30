@@ -1,15 +1,16 @@
 import axios from "axios";
-import {Link} from "react-router-dom";
-import { useSelector } from "react-redux";
+import {useState} from "react";
 
-const CompletedTasks=()=>{
+//to implement redux:
+import {useSelector,useDispatch} from "react-redux";
 
-    return(
-        <>
+const  CompletedTasks=()=>{
 
-        </>
-    )
+return(
+  <>
 
+  </>
+)
 };
 
 export default CompletedTasks;
