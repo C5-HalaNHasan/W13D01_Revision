@@ -15,7 +15,8 @@ const Register=()=>{
                 setMessage(result.data.message)
             }
         }).catch((error)=>{
-            setMessage(error.message)
+            // console.log(error.response.data.message)
+            setMessage(error.response.data.message)
         })
     };
 
