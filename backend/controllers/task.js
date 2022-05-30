@@ -4,9 +4,10 @@ const connection=require("../models/db");
 // a function that adds a task to the database
 const addTask=(req,res)=>{
 //get the taskName and userId from the body:
-const {taskName,user_id}=req.body;
+const {taskName}=req.body;
+const userId=req.token.userId;
 const query=`INSERT INTO tasks(taskName,user_id) VALUES(?,?)`;
-const data=[taskName,user_id];
+const data=[taskName,userId];
 connection.query(query,data,(error,result)=>{
     if(error){
         return res.status(500).json({
@@ -32,8 +33,9 @@ connection.query(query,data,(error,result)=>{
 const updateTaskById=(req,res)=>{
     const taskId=req.params.id;
     const {taskName}=req.body;
-    const query=`UPDATE tasks SET taskName=? WHERE id=?`;
-    const data=[taskName,taskId];
+    const userId=req.token.userId;
+    const query=`UPDATE tasks SET taskName=? WHERE id=? AND user_id=?`;
+    const data=[taskName,taskId,userId];
     connection.query(query,data,(error,result)=>{
         if(error){
             return res.status(500).json({
@@ -60,8 +62,9 @@ const updateTaskById=(req,res)=>{
 // a function that updates isCompleted to 1 for a task by its id sent by params /:id
 const completeTaskById=(req,res)=>{
     const taskId=req.params.id;
-    const query=`UPDATE tasks SET isCompleted=1 WHERE id=?`;
-    const data=[taskId];
+    const userId=req.token.userId;
+    const query=`UPDATE tasks SET isCompleted=1 WHERE id=? AND user_id=?`;
+    const data=[taskId,userId];
     connection.query(query,data,(error,result)=>{
         if(error){
             return res.status(500).json({
@@ -88,9 +91,10 @@ const completeTaskById=(req,res)=>{
 // a function that set isDeleted of a task to 1 by its id sent by params /:id
 const deleteTaskById=(req,res)=>{
     const taskId=req.params.id;
+    const userId=req.token.userId;
     //setting isDeleted to 1 (soft)
-    const query=`UPDATE tasks SET isDeleted=1 WHERE id=?`;
-    const data=[taskId];
+    const query=`UPDATE tasks SET isDeleted=1 WHERE id=? AND user_id=?`;
+    const data=[taskId,userId];
     connection.query(query,data,(error,result)=>{
         if(error){
             return res.status(500).json({
@@ -117,8 +121,10 @@ const deleteTaskById=(req,res)=>{
 
 // a function that gets all the tasks saved in the database where isDeleted=0
 const getAllTasks=(req,res)=>{
-    const query=`SELECT * FROM tasks WHERE isDeleted=0`;
-    connection.query(query,(error,result)=>{
+    const query=`SELECT * FROM tasks WHERE isDeleted=0 AND user_id=?`;
+    const userId=req.token.userId;
+    const data=[userId];
+    connection.query(query,data,(error,result)=>{
         if(error){
             return res.status(500).json({
                 success:false,
@@ -144,8 +150,10 @@ const getAllTasks=(req,res)=>{
 
 // a function that gets all the tasks saved in the database where isDeleted=0 && isCompleted=1
 const getCompletedTasks=(req,res)=>{
-    const query=`SELECT * FROM tasks WHERE isDeleted=0 AND isCompleted=1`;
-    connection.query(query,(error,result)=>{
+    const query=`SELECT * FROM tasks WHERE isDeleted=0 AND isCompleted=1 AND user_id=?`;
+    const userId=req.token.userId;
+    const data=[userId];
+    connection.query(query,error,(error,result)=>{
         if(error){
             return res.status(500).json({
                 success:false,
