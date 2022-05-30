@@ -1,5 +1,6 @@
 import axios from "axios";
 import {useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 //to implement redux:
 import {useSelector,useDispatch} from "react-redux";
@@ -9,6 +10,8 @@ const  Login=()=>{
     const [email,setEmail]=useState("");
     const [password,setPassword]=useState("");
     const [message,setMessage]=useState("");
+
+    const navigate=useNavigate(); //to redirect the user to the homepage after a successful login
     
     //to save the token in the store after a successful login:
     const dispatch=useDispatch();
@@ -24,6 +27,7 @@ const  Login=()=>{
             if(result.data.token){
                 setMessage("successful logIn")
                 dispatch(setLogin(result.data.token)) //to be saved in the store
+                navigate("/")
             }else{
                 setMessage("unsuccessful logIn")
             }

@@ -1,0 +1,33 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+}
+
+.navBar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 7vh;
+    background-color: rgba(0, 0, 255, 0.1);
+    position: fixed;
+    top: 0;
+    min-width: 100vw;
+}
+
+.navBar h3 {
+    margin-right: 65%;
+    font-size: 1.5rem;
+}
+
+.navBar ul {
+    float: right;
+    margin-right: 40px;
+}
+
+.navBar ul li {
+    display: inline-block;
+    margin: 0 5px;
+}

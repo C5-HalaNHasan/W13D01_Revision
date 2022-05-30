@@ -7,7 +7,7 @@ const tasksSlice=createSlice({
     },
     reducers:{
         setTasks:(state,action)=>{
-        // action:{payload:[array of tasks]}
+        // action:{payload:[array of tasks from backend]}
         state.tasks=action.payload;
         },
         addTasks:(state,action)=>{

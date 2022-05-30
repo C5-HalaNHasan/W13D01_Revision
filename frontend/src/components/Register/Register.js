@@ -8,16 +8,20 @@ const Register=()=>{
     const [message,setMessage]=useState("");
 
     const createNewUser=()=>{
-        axios.post("http://localhost:5000/user/register",{email,password,role_id:"1"}).then((result)=>{
-            if(result.data.success){
-                setMessage(result.data.message)
-            }else{
-                setMessage(result.data.message)
-            }
-        }).catch((error)=>{
-            // console.log(error.response.data.message)
-            setMessage(error.response.data.message)
-        })
+        if(email&&password){ //to ensure that the database has user email and password
+            axios.post("http://localhost:5000/user/register",{email,password,role_id:"1"}).then((result)=>{
+                if(result.data.success){
+                    setMessage(result.data.message)
+                }else{
+                    setMessage(result.data.message)
+                }
+            }).catch((error)=>{
+                // console.log(error.response.data.message)
+                setMessage(error.response.data.message)
+            })
+        }else{
+            setMessage("please fill all the fields")
+        }
     };
 
 
