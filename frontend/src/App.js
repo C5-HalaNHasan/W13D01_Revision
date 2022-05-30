@@ -1,10 +1,16 @@
 import './App.css';
+import {Routes, Route} from "react-router-dom";
+import Register from './components/Register/Register';
+
 
 const App=()=> {
   return (
-    <div>
- <h1>toDoList</h1>
-    </div>
+    <>
+    <Routes>
+    <Route path="/register" element={<Register/>}/>
+    </Routes>
+    </>
+
   );
 }
 

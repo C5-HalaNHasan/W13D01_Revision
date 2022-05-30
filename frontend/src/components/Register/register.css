@@ -1,0 +1,8 @@
+.mainBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+    border: 2px solid black;
+    padding: 1%;
+}

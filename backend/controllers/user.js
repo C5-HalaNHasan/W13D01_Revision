@@ -9,7 +9,8 @@ const register=async (req,res)=>{
     //user data is collected then the password is hashed before being saved in the database
     const {email,password,role_id}=req.body;
     const query=`INSERT INTO users(email,password,role_id) VALUES(?,?,?)`
-    const hashedPassword=await bcrypt.hash(password,10)
+    const SALT=10;
+    const hashedPassword=await bcrypt.hash(password,SALT);
     const data=[email,hashedPassword,role_id];
     //before registration: the entered email is going to be checked if it exists in the dataBase or not:
     const query1=`SELECT * FROM users WHERE email=?`
