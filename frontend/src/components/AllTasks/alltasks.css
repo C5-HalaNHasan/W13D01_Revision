@@ -1,0 +1,14 @@
+.tasksContainer {
+    display: grid;
+    place-items: center;
+}
+
+.taskCard {
+    display: flex;
+    flex-direction: column;
+    border: 3px blue solid;
+    border-radius: 5px;
+    width: 50%;
+    margin: 1% 0;
+    padding: 1%;
+}

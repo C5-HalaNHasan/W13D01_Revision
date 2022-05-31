@@ -152,7 +152,7 @@ const getCompletedTasks=(req,res)=>{
     const query=`SELECT * FROM tasks WHERE isDeleted=0 AND isCompleted=1 AND user_id=?`;
     const userId=req.token.userId;
     const data=[userId];
-    connection.query(query,error,(error,result)=>{
+    connection.query(query,data,(error,result)=>{
         if(error){
             return res.status(500).json({
                 success:false,

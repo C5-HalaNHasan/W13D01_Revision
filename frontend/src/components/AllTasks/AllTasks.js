@@ -1,10 +1,11 @@
+import "./alltasks.css";
 import axios from "axios";
 import {useEffect, useState} from "react";
 import NavBar from "../NavBar/NavBar";
 
 //to implement redux:
 import {useSelector,useDispatch} from "react-redux";
-import {setTasks,addTasks,updateTaskById,deleteTaskById} from "../redux/reducers/tasks"
+import {setTasks,addTasks,updateTaskById,deleteTaskById} from "../redux/reducers/tasks";
 
 const  AllTasks=()=>{
     //to update taskName:
@@ -87,24 +88,25 @@ const  AllTasks=()=>{
 
 return(
     <>
-    {/* <NavBar/> */}
+    <NavBar/>
     <label for="newTask">Add new task</label>
     <input id="newTask" placeHolde="add new task" onChange={(e)=>setNewTask(e.target.value)}/>
     <button onClick={()=>addNewTaskToDb(newTask)}>add</button>
     <br/><br/>
 
-  <div className="taskCard">
-  {tasks.map((task,index)=>{
-      return(<>
+  <div className="tasksContainer">
+  {tasks.length&&tasks.map((task,index)=>{
+      return(<div className="taskCard">
           <p>{task.taskName}</p>
-          <input placeHolder="new name" onChange={(e)=>setTaskName(e.target.value)}/>
-          <p>{task.isCompleted}</p>
+          {!task.isCompleted&&<input placeHolder="new name" onChange={(e)=>setTaskName(e.target.value)}/>}
+          <p>{task.isCompleted?"completed":"not completed"}</p>
           <button onClick={()=>deleteTaskFromDB(task.id)}>delete</button>
           {!task.isCompleted&&(<>
           <button onClick={()=>updateTaskInDb(task.id,taskName)}>update</button>
           <button onClick={()=>setTaskCompleted(task.id)}>complete</button>
+          <br/><br/>
           </>)}
-      </>)
+      </div>)
   })}
 
   </div>
