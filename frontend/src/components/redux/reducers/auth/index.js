@@ -9,7 +9,7 @@ const authSlice=createSlice({
         setLogin:(state,action)=>{
             // action:{payload:token from the login backend response}
             state.token=action.payload;
-            localStorage.setItem("token",action.payload);
+            localStorage.setItem("token",`Bearer ${action.payload}`); //!
         },
         setLogout:(state,action)=>{
             state.token="";
